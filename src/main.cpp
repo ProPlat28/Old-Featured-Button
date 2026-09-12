@@ -1,6 +1,8 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CreatorLayer.hpp>
 #include <Geode/binding/CCMenuItemSpriteExtra.hpp>
+#include <string>
+#include <algorithm>
 
 using namespace geode::prelude;
 
@@ -16,7 +18,8 @@ class $modify(OldFeaturedHook, CreatorLayer) {
     void swapFeaturedButtonTexture(CCNode* node) {
         if (!node) return;
 
-        auto id = node->getID();
+        std::string const id = node->getID();
+
         if (id.find("featured") != std::string::npos) {
             if (auto btn = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
                 this->replaceButtonSprite(btn);
