@@ -6,7 +6,7 @@
 
 using namespace geode::prelude;
 
-constexpr float FEATURED_BTN_SCALE_MULTIPLIER = 0.9f;
+constexpr float FEATURED_BTN_SCALE_MULTIPLIER = 1.1f;
 
 class $modify(OldFeaturedHook, CreatorLayer) {
     bool init() {
