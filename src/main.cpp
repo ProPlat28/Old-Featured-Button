@@ -37,9 +37,31 @@ class $modify(OldFeaturedHook, CreatorLayer) {
         }
     }
 
+    CCSize findSiblingButtonSize(CCMenuItemSpriteExtra* btn) {
+        auto parent = btn->getParent();
+        if (!parent) return CCSizeZero;
+
+        auto siblings = parent->getChildren();
+        if (!siblings) return CCSizeZero;
+
+        for (int i = 0; i < siblings->count(); i++) {
+            auto sibling = typeinfo_cast<CCMenuItemSpriteExtra*>(siblings->objectAtIndex(i));
+            if (sibling && sibling != btn) {
+                auto size = sibling->getContentSize();
+                if (size.width > 0.f && size.height > 0.f) {
+                    return size;
+                }
+            }
+        }
+
+        return CCSizeZero;
+    }
+
     void replaceButtonSprite(CCMenuItemSpriteExtra* btn) {
-        auto oldImage = btn->getNormalImage();
-        auto oldSize = oldImage ? oldImage->getContentSize() : CCSizeZero;
+        CCSize targetSize = this->findSiblingButtonSize(btn);
+        if (targetSize.width <= 0.f || targetSize.height <= 0.f) {
+            targetSize = btn->getContentSize();
+        }
 
         auto newSprite = CCSprite::create("old_featured_btn.png"_spr);
         if (!newSprite) {
@@ -47,14 +69,21 @@ class $modify(OldFeaturedHook, CreatorLayer) {
             return;
         }
 
-        if (oldSize.width > 0.f && oldSize.height > 0.f) {
-            auto newSize = newSprite->getContentSize();
-            float scale = std::min(oldSize.width / newSize.width, oldSize.height / newSize.height);
+        auto rawSize = newSprite->getContentSize();
+        if (rawSize.width > 0.f && rawSize.height > 0.f &&
+            targetSize.width > 0.f && targetSize.height > 0.f) {
+            float scale = std::min(
+                targetSize.width / rawSize.width,
+                targetSize.height / rawSize.height
+            );
             newSprite->setScale(scale);
         }
 
         btn->setNormalImage(newSprite);
-        btn->setContentSize(newSprite->getScaledContentSize());
+
+        if (targetSize.width > 0.f && targetSize.height > 0.f) {
+            btn->setContentSize(targetSize);
+        }
 
         log::info("OldFeaturedIcon: replaced Featured button sprite");
     }
