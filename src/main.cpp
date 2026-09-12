@@ -6,6 +6,8 @@
 
 using namespace geode::prelude;
 
+constexpr float FEATURED_BTN_SCALE_MULTIPLIER = 0.8f;
+
 class $modify(OldFeaturedHook, CreatorLayer) {
     bool init() {
         if (!CreatorLayer::init()) return false;
@@ -70,19 +72,24 @@ class $modify(OldFeaturedHook, CreatorLayer) {
         }
 
         auto rawSize = newSprite->getContentSize();
+        float scale = 1.f;
         if (rawSize.width > 0.f && rawSize.height > 0.f &&
             targetSize.width > 0.f && targetSize.height > 0.f) {
-            float scale = std::min(
+            scale = std::min(
                 targetSize.width / rawSize.width,
                 targetSize.height / rawSize.height
             );
-            newSprite->setScale(scale);
         }
+        scale *= FEATURED_BTN_SCALE_MULTIPLIER;
+        newSprite->setScale(scale);
 
         btn->setNormalImage(newSprite);
 
         if (targetSize.width > 0.f && targetSize.height > 0.f) {
-            btn->setContentSize(targetSize);
+            btn->setContentSize(CCSize(
+                rawSize.width * scale,
+                rawSize.height * scale
+            ));
         }
 
         log::info("OldFeaturedIcon: replaced Featured button sprite");
