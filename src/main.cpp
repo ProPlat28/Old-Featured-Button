@@ -27,12 +27,12 @@ class $modify(CreatorLayer) {
 
                 if (sprite) {
                     auto size = button->getContentSize();
-                    auto imageSize = sprite->getContentSize();
+                    auto spriteSize = sprite->getContentSize();
 
-                    if (imageSize.width > 0 && imageSize.height > 0) {
+                    if (spriteSize.width > 0 && spriteSize.height > 0) {
                         float scale = std::min(
-                            size.width / imageSize.width,
-                            size.height / imageSize.height
+                            size.width / spriteSize.width,
+                            size.height / spriteSize.height
                         );
 
                         sprite->setScale(scale);
