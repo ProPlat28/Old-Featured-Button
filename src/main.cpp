@@ -13,35 +13,18 @@ class $modify(CreatorLayer) {
         return true;
     }
 
-    void findFeatured(CCNode* node) {
-        auto id = node->getID();
+    void findFeaturedButton(CCNode* node) {
+    auto id = std::string(node->getID());
 
-        if (id.find("featured") != std::string::npos) {
-            auto button = typeinfo_cast<CCMenuItemSpriteExtra*>(node);
+    if (id.find("featured") != std::string::npos) {
+        auto button = typeinfo_cast<CCMenuItemSpriteExtra*>(node);
 
-            if (!button)
-                button = typeinfo_cast<CCMenuItemSpriteExtra*>(node->getParent());
+        if (!button)
+            button = typeinfo_cast<CCMenuItemSpriteExtra*>(node->getParent());
 
-            if (button) {
-                auto sprite = CCSprite::create("old_featured_btn.png"_spr);
-
-                if (sprite) {
-                    auto size = button->getContentSize();
-                    auto spriteSize = sprite->getContentSize();
-
-                    if (spriteSize.width > 0 && spriteSize.height > 0) {
-                        float scale = std::min(
-                            size.width / spriteSize.width,
-                            size.height / spriteSize.height
-                        );
-
-                        sprite->setScale(scale);
-                    }
-
-                    button->setNormalImage(sprite);
-                }
-            }
-        }
+        if (button)
+            changeFeaturedButton(button);
+    }
 
         auto children = node->getChildren();
 
