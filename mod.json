@@ -1,0 +1,25 @@
+{
+	"geode": "5.9.0",
+	"gd": {
+        "mac": "2.2081",
+        "android": "2.2081",
+        "win": "2.2081"
+    },
+	"version": "v1.2.1",
+	"id": "proplat.old-featured-button",
+	"name": "Old Featured Button",
+	"developer": "ProPlat",
+	"description": "Replaces the actual Featured button by the old one. (Before 2.2)",
+    "tags": ["customization"],
+	"dependencies": {
+		"geode.node-ids": ">=v1.23.3"
+	},
+    "links": {
+        "source": "https://github.com/ProPlat28/Old-Featured-Button"
+    },
+    "resources": {
+        "sprites": [
+            "resources/featured.png"
+        ]
+    }
+}
